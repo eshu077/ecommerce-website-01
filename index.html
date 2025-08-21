@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>BrothersBond Clothing • E‑Commerce</title>
+  <meta name="description" content="A sleek, responsive, single‑file e‑commerce website built with HTML, CSS, and JavaScript." />
+  <link rel="preconnect" href="https://images.unsplash.com" crossorigin>
+  <style>
+    :root{
+      --bg:#0b0c10; --card:#111318; --muted:#c5c6c7; --text:#e8eaed; --brand:#00e5a8; --brand-2:#7c5cff; --accent:#ffb703; --danger:#ff5c5c;
+      --ring: 0 0 0 3px rgba(0,229,168,.25);
+    }
+    :root.light{
+      --bg:#f6f7fb; --card:#ffffff; --muted:#555; --text:#121417; --brand:#006bff; --brand-2:#9b72ff; --accent:#ff8a00; --danger:#e84545;
+      --ring: 0 0 0 3px rgba(0,107,255,.18);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; font: 15px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial,sans-serif;
+      background:radial-gradient(1200px 600px at 80% -10%, rgba(124,92,255,.18), transparent 60%) ,var(--bg);
+      color:var(--text);
+    }
+    a{color:inherit; text-decoration:none}
+    .container{width: min(1200px, 92vw); margin-inline:auto}
+    header{
+      position:sticky; top:0; z-index:50; backdrop-filter:saturate(180%) blur(8px);
+      background:linear-gradient(to bottom, rgba(17,19,24,.8), rgba(17,19,24,.5));
+      border-bottom:1px solid rgba(255,255,255,.06)
+    }
+    :root.light header{background: linear-gradient(to bottom, rgba(255,255,255,.9), rgba(255,255,255,.6)); border-bottom-color: rgba(0,0,0,.06)}
+    .nav{display:flex; align-items:center; gap:12px; padding:14px 0}
+    .logo{display:flex; gap:10px; align-items:center; font-weight:800; letter-spacing:.5px}
+    .logo-badge{width:32px; height:32px; border-radius:10px; display:grid; place-items:center; background:linear-gradient(135deg,var(--brand),var(--brand-2)); box-shadow:0 6px 20px rgba(0,229,168,.35)}
+    .search{flex:1; display:flex; align-items:center; gap:10px; padding:10px 12px; border:1px solid rgba(255,255,255,.1); border-radius:14px; background:var(--card)}
+    :root.light .search{border-color: rgba(0,0,0,.08)}
+    .search input{flex:1; background:transparent; border:0; outline:none; color:var(--text); font-size:14px}
+    .chip{padding:7px 12px; border-radius:999px; border:1px solid rgba(255,255,255,.12); background:transparent; color:var(--text); cursor:pointer}
+    :root.light .chip{border-color:rgba(0,0,0,.1)}
+    .chip.active{background:linear-gradient(135deg,rgba(0,229,168,.08),rgba(124,92,255,.08)); border-color: rgba(0,229,168,.3)}
+    .btn{display:inline-flex; align-items:center; gap:8px; padding:10px 14px; border-radius:12px; border:1px solid rgba(255,255,255,.12); background:var(--card); cursor:pointer}
+    .btn:hover{box-shadow:var(--ring)}
+    .icon{width:18px; height:18px; display:inline-block}
+    .count{min-width:18px; height:18px; padding:0 6px; border-radius:999px; background:var(--accent); color:#111; font-weight:700; font-size:12px; display:grid; place-items:center}
+
+    .hero{display:grid; grid-template-columns: 1.1fr .9fr; gap:24px; align-items:center; padding:26px 0 10px}
+    .hero .copy{padding:18px}
+    .kicker{display:inline-flex; gap:8px; align-items:center; font-size:12px; color:var(--muted); letter-spacing:.4px}
+    .title{font-size:clamp(28px, 5vw, 46px); line-height:1.05; margin:10px 0 14px; font-weight:900}
+    .subtitle{color:var(--muted); margin-bottom:18px}
+    .cta{display:flex; gap:12px; flex-wrap:wrap}
+    .primary{background:linear-gradient(135deg,var(--brand),var(--brand-2)); border:0; color:white}
+    .ghost{background:transparent}
+    .hero img{width:100%; border-radius:22px; aspect-ratio: 16/10; object-fit:cover; box-shadow: 0 16px 48px rgba(0,0,0,.35)}
+
+    .toolbar{display:flex; justify-content:space-between; align-items:center; gap:14px; margin:14px 0 6px}
+    .filters{display:flex; flex-wrap:wrap; gap:8px}
+    .sort{display:flex; gap:10px; align-items:center}
+    select{padding:10px 12px; border-radius:12px; border:1px solid rgba(255,255,255,.12); background:var(--card); color:var(--text)}
+
+    .grid{display:grid; grid-template-columns: repeat(4, 1fr); gap:16px}
+    @media (max-width: 1000px){.hero{grid-template-columns:1fr}.grid{grid-template-columns:repeat(2,1fr)}}
+    @media (max-width: 560px){.grid{grid-template-columns:1fr}}
+
+    .card{position:relative; background:var(--card); border:1px solid rgba(255,255,255,.08); border-radius:18px; overflow:hidden; transition: transform .25s ease, box-shadow .25s ease}
+    :root.light .card{border-color: rgba(0,0,0,.08)}
+    .card:hover{transform: translateY(-4px); box-shadow: 0 14px 40px rgba(124,92,255,.18)}
+    .badge{position:absolute; top:10px; left:10px; background:linear-gradient(135deg,var(--accent),#ffd166); color:#111; font-weight:800; padding:6px 10px; border-radius:999px; font-size:12px}
+    .imgwrap{overflow:hidden}
+    .imgwrap img{width:100%; height:220px; object-fit:cover; display:block}
+    .content{padding:12px 12px 14px}
+    .title-sm{font-weight:800; margin-bottom:4px}
+    .muted{color:var(--muted); font-size:13px}
+    .price{display:flex; gap:8px; align-items:center; margin:8px 0 12px}
+    .price b{font-size:18px}
+    .strike{text-decoration:line-through; color:var(--muted); font-size:13px}
+    .stars{font-size:12px; color:#f5c518}
+    .actions{display:flex; gap:8px}
+    .actions .btn{flex:1; justify-content:center}
+
+    /* Cart Drawer */
+    .drawer{position:fixed; inset:0; display:grid; place-items:stretch; pointer-events:none}
+    .drawer.active{pointer-events:auto}
+    .scrim{background:rgba(0,0,0,.4); opacity:0; transition:opacity .25s ease}
+    .drawer.active .scrim{opacity:1}
+    .panel{margin-left:auto; width:min(420px, 92vw); background:var(--card); height:100%; transform: translateX(100%); transition: transform .3s ease; border-left:1px solid rgba(255,255,255,.08)}
+    :root.light .panel{border-color: rgba(0,0,0,.08)}
+    .drawer.active .panel{transform:none}
+    .panel header{position:sticky; top:0}
+    .panel .body{padding:18px; display:flex; flex-direction:column; gap:12px; height:calc(100% - 64px)}
+    .cart-item{display:grid; grid-template-columns: 64px 1fr auto; gap:12px; align-items:center; background:rgba(255,255,255,.02); padding:10px; border-radius:12px}
+    .qty{display:inline-flex; align-items:center; border:1px solid rgba(255,255,255,.12); border-radius:12px}
+    .qty button{background:transparent; border:0; padding:8px 10px; color:var(--text); cursor:pointer}
+    .qty input{width:36px; text-align:center; background:transparent; border:0; color:var(--text)}
+    .summary{margin-top:auto; border-top:1px dashed rgba(255,255,255,.12); padding-top:12px}
+
+    /* Modal */
+    .modal{position:fixed; inset:0; display:grid; place-items:center; background:rgba(0,0,0,.5); opacity:0; pointer-events:none; transition:.25s}
+    .modal.active{opacity:1; pointer-events:auto}
+    .modal-card{width:min(920px,96vw); background:var(--card); border-radius:18px; overflow:hidden; border:1px solid rgba(255,255,255,.08)}
+    .modal-body{display:grid; grid-template-columns: 1.1fr .9fr}
+    @media(max-width: 900px){.modal-body{grid-template-columns:1fr}}
+    .modal-body img{width:100%; height:100%; max-height:480px; object-fit:cover}
+    .modal-content{padding:18px}
+
+    /* Footer */
+    footer{margin:40px 0 80px; color:var(--muted)}
+
+    /* Animations */
+    @keyframes rise {from{opacity:0; transform: translateY(12px)} to{opacity:1; transform:none}}
+    .fade-in{animation: rise .5s ease both}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container nav">
+      <div class="logo" aria-label="NovaMart">
+        <div class="logo-badge" aria-hidden="true">🛍️</div>
+        <span>BrothersBond Clothing</span>
+      </div>
+      <form class="search" onsubmit="event.preventDefault()">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10.5 19a8.5 8.5 0 1 0 0-17 8.5 8.5 0 0 0 0 17Zm0 0 7 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        <input id="q" type="search" placeholder="Search products, categories…" />
+        <button type="button" class="btn ghost" id="clearBtn">Clear</button>
+      </form>
+      <button class="btn" id="themeBtn" title="Toggle theme">🌗 Theme</button>
+      <button class="btn" id="cartBtn" title="Open cart">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 5h1.5l2.2 11.1A2 2 0 0 0 8.65 18H18a2 2 0 0 0 1.96-1.63L21 8H6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="9" cy="20" r="1.5" fill="currentColor"/><circle cx="17" cy="20" r="1.5" fill="currentColor"/></svg>
+        <span class="count" id="cartCount">0</span>
+      </button>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <div class="copy">
+        <span class="kicker">⚡ Festive Mega Sale • Up to 60% Off</span>
+        <h1 class="title">Shop smart with <span style="background:linear-gradient(135deg,var(--brand),var(--brand-2)); -webkit-background-clip:text; background-clip:text; color:transparent">BrothersBond Clothing</span></h1>
+        <p class="subtitle">Curated picks across Electronics, Fashion, Home, Beauty & Sports. Smooth cart, quick preview, and delightful design—perfect for project submissions.</p>
+        <div class="cta">
+          <a href="#catalog" class="btn primary">Browse Deals</a>
+          <a href="#" class="btn ghost" id="aboutBtn">How it works</a>
+        </div>
+      </div>
+      <img alt="Hero" src="https://images.unsplash.com/photo-1512295767273-ac109ac3acfa?q=80&w=1600&auto=format&fit=crop" />
+    </section>
+
+    <section class="toolbar" id="catalog">
+      <div class="filters" id="filters"></div>
+      <div class="sort">
+        <label for="sortSel" class="muted">Sort by</label>
+        <select id="sortSel">
+          <option value="pop">Popularity</option>
+          <option value="low">Price: Low to High</option>
+          <option value="high">Price: High to Low</option>
+          <option value="new">Newest First</option>
+        </select>
+      </div>
+    </section>
+
+    <section class="grid" id="grid"></section>
+
+    <footer>
+      <div class="container">
+        <p>© <span id="year"></span> NovaMart. Demo project built with HTML, CSS & JS. Images are royalty‑free placeholders (Unsplash URLs—easily discoverable via Google search).
+        </p>
+      </div>
+    </footer>
+  </main>
+
+  <!-- CART DRAWER -->
+  <aside class="drawer" id="drawer" aria-hidden="true">
+    <div class="scrim" id="scrim"></div>
+    <div class="panel">
+      <header class="nav container" style="padding:14px">
+        <strong>🧺 Your Cart</strong>
+        <button class="btn" id="closeCart">Close</button>
+      </header>
+      <div class="body">
+        <div id="cartItems" style="display:flex; flex-direction:column; gap:10px"></div>
+        <div class="summary">
+          <div style="display:flex; justify-content:space-between; margin:6px 0"><span class="muted">Subtotal</span> <b id="subtotal">₹0</b></div>
+          <div style="display:flex; justify-content:space-between; margin:6px 0"><span class="muted">Shipping</span> <span>₹0</span></div>
+          <div style="display:flex; justify-content:space-between; margin:6px 0"><span class="muted">Total</span> <b id="total">₹0</b></div>
+          <button class="btn primary" style="width:100%; justify-content:center; margin-top:10px">Checkout</button>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- QUICK VIEW MODAL -->
+  <div class="modal" id="modal" aria-hidden="true">
+    <div class="modal-card">
+      <div class="nav" style="padding:12px 16px; justify-content:space-between">
+        <strong id="modalTitle">Product</strong>
+        <button class="btn" id="closeModal">Close</button>
+      </div>
+      <div class="modal-body">
+        <img id="modalImg" alt="preview" src=""/>
+        <div class="modal-content">
+          <p id="modalCat" class="muted"></p>
+          <h3 class="title-sm" id="modalName"></h3>
+          <div class="stars" id="modalStars">★★★★★</div>
+          <p id="modalDesc" style="margin:10px 0 14px"></p>
+          <div class="price"><b id="modalPrice"></b><span class="strike" id="modalMRP"></span></div>
+          <div style="display:flex; gap:8px">
+            <button class="btn primary" id="modalAdd">Add to Cart</button>
+            <button class="btn" id="modalBuy">Buy Now</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const $ = s => document.querySelector(s);
+    const $$ = s => [...document.querySelectorAll(s)];
+
+    // --- Data (12 products across 5 categories) ---
+    const products = [
+      {id:1, name:'Noise‑Cancel Headphones', cat:'Electronics', price:3999, mrp:6499, rating:4.6, img:'hd.png', badge:'-38%', desc:'Wireless over‑ear ANC headphones with 35h battery, Type‑C fast charge.'},
+      {id:2, name:'Smartwatch Pro S', cat:'Electronics', price:2999, mrp:4999, rating:4.4, img:'https://images.unsplash.com/photo-1511735111819-9a3f7709049c?q=80&w=1200&auto=format&fit=crop', badge:'Top Pick', desc:'AMOLED display, health tracking, BT calling, 100+ sports modes.'},
+      {id:3, name:'Athletic Sneakers', cat:'Fashion', price:1799, mrp:2999, rating:4.2, img:'https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=1200&auto=format&fit=crop', badge:'-40%', desc:'Breathable knit upper, cushioned sole—perfect for everyday runs.'},
+      {id:4, name:'Minimal Backpack', cat:'Fashion', price:1499, mrp:2199, rating:4.3, img:'https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?q=80&w=1200&auto=format&fit=crop', badge:'New', desc:'Water‑resistant 24L pack with padded laptop sleeve and quick pockets.'},
+      {id:5, name:'Ceramic Dinner Set (18‑pc)', cat:'Home', price:2599, mrp:3599, rating:4.5, img:'https://images.unsplash.com/photo-1504754524776-8f4f37790ca0?q=80&w=1200&auto=format&fit=crop', badge:'Bestseller', desc:'Microwave‑safe plates and bowls with premium glaze finish.'},
+      {id:6, name:'Indoor Plant + Pot', cat:'Home', price:799, mrp:1199, rating:4.1, img:'https://images.unsplash.com/photo-1485955900006-10f4d324d411?q=80&w=1200&auto=format&fit=crop', badge:'Eco', desc:'Live pothos plant with handcrafted ceramic pot. Low maintenance.'},
+      {id:7, name:'Vitamin C Serum', cat:'Beauty', price:699, mrp:999, rating:4.0, img:'serum.png', badge:'-30%', desc:'Brightening formula with 10% Vitamin‑C and hyaluronic acid.'},
+      {id:8, name:'Matte Lip Color Kit', cat:'Beauty', price:899, mrp:1299, rating:4.3, img:'matte.png', badge:'Hot', desc:'Transfer‑proof, long‑wear matte finish in 3 flattering shades.'},
+      {id:9, name:'Pro Football', cat:'Sports', price:999, mrp:1499, rating:4.2, img:'https://images.unsplash.com/photo-1547347298-4074fc3086f0?q=80&w=1200&auto=format&fit=crop', badge:'-33%', desc:'Durable TPU outer with butyl bladder for superior air retention.'},
+      {id:10, name:'Yoga Mat (6mm)', cat:'Sports', price:799, mrp:1099, rating:4.4, img:'https://images.unsplash.com/photo-1540206276207-3af25c08abc4?q=80&w=1200&auto=format&fit=crop', badge:'New', desc:'Non‑slip texture, sweat‑resistant material, carry strap included.'},
+      {id:11, name:'4K Action Cam', cat:'Electronics', price:4499, mrp:6999, rating:4.1, img:'camera.png', badge:'Deal', desc:'4K/30fps, EIS stabilization, waterproof case up to 30m.'},
+      {id:12, name:'Espresso Maker', cat:'Home', price:3299, mrp:4999, rating:4.5, img:'https://images.unsplash.com/photo-1511920170033-f8396924c348?q=80&w=1200&auto=format&fit=crop', badge:'Chef’s Choice', desc:'15‑bar pump, steam wand for latte art, compact stainless build.'},
+    ];
+
+    const categories = ['All','Electronics','Fashion','Home','Beauty','Sports'];
+
+    // --- State ---
+    const state = {
+      q:'', cat:'All', sort:'pop',
+      cart: JSON.parse(localStorage.getItem('novamart_cart')||'[]')
+    };
+
+    // --- Helpers ---
+    const formatINR = n => `₹${n.toLocaleString('en-IN')}`;
+    const saveCart = () => localStorage.setItem('novamart_cart', JSON.stringify(state.cart));
+
+    // --- UI Build ---
+    function buildFilters(){
+      const wrap = $('#filters');
+      wrap.innerHTML = categories.map(c=>`<button class="chip ${c===state.cat?'active':''}" data-cat="${c}">${c}</button>`).join('');
+      $$('#filters .chip').forEach(b=> b.onclick = () => {state.cat = b.dataset.cat; buildFilters(); render();});
+    }
+
+    function productCard(p){
+      const stars = '★'.repeat(Math.round(p.rating)) + '☆'.repeat(5-Math.round(p.rating));
+      return `
+        <article class="card fade-in">
+          ${p.badge?`<span class="badge">${p.badge}</span>`:''}
+          <div class="imgwrap"><img loading="lazy" alt="${p.name}" src="${p.img}"/></div>
+          <div class="content">
+            <div class="muted" style="margin-bottom:4px">${p.cat}</div>
+            <div class="title-sm">${p.name}</div>
+            <div class="stars" aria-label="rating">${stars}</div>
+            <div class="price"><b>${formatINR(p.price)}</b><span class="strike">${formatINR(p.mrp)}</span></div>
+            <div class="actions">
+              <button class="btn" data-id="${p.id}" data-action="quick">Quick View</button>
+              <button class="btn primary" data-id="${p.id}" data-action="add">Add to Cart</button>
+            </div>
+          </div>
+        </article>`
+    }
+
+    function render(){
+      let list = [...products];
+      // search
+      const q = state.q.trim().toLowerCase();
+      if(q){ list = list.filter(p=> (p.name+p.cat+p.desc).toLowerCase().includes(q)); }
+      // category
+      if(state.cat!=="All"){ list = list.filter(p=> p.cat===state.cat); }
+      // sort
+      if(state.sort==='low') list.sort((a,b)=> a.price-b.price);
+      if(state.sort==='high') list.sort((a,b)=> b.price-a.price);
+      if(state.sort==='new') list = list.reverse(); // fake newest
+      $('#grid').innerHTML = list.map(productCard).join('');
+      // attach buttons
+      $$('#grid .btn').forEach(btn=>{
+        const id = +btn.dataset.id; const action = btn.dataset.action;
+        btn.onclick = () => {
+          const p = products.find(x=>x.id===id);
+          if(action==='add') addToCart(p);
+          if(action==='quick') openModal(p);
+        }
+      })
+      updateCount();
+    }
+
+    // --- Search & Sort ---
+    $('#q').addEventListener('input', e=>{ state.q = e.target.value; render(); })
+    $('#clearBtn').onclick = ()=>{ state.q=''; $('#q').value=''; render(); }
+    $('#sortSel').onchange = e=>{ state.sort = e.target.value; render(); }
+
+    // --- Theme Toggle ---
+    const storedTheme = localStorage.getItem('novamart_theme') || 'dark';
+    if(storedTheme==='light'){ document.documentElement.classList.add('light'); }
+    $('#themeBtn').onclick = ()=>{
+      document.documentElement.classList.toggle('light');
+      localStorage.setItem('novamart_theme', document.documentElement.classList.contains('light')?'light':'dark');
+    }
+
+    // --- Cart ---
+    function updateCount(){ $('#cartCount').textContent = state.cart.reduce((a,c)=>a+c.qty,0); $('#subtotal').textContent = formatINR(total()); $('#total').textContent = formatINR(total()); }
+    function total(){ return state.cart.reduce((a,c)=> a + c.price*c.qty, 0); }
+    function addToCart(p){
+      const existing = state.cart.find(x=> x.id===p.id);
+      if(existing) existing.qty++;
+      else state.cart.push({id:p.id, name:p.name, price:p.price, img:p.img, qty:1});
+      saveCart(); updateCount(); openCart(); buildCart();
+    }
+    function buildCart(){
+      const box = $('#cartItems');
+      if(!state.cart.length){ box.innerHTML = '<p class="muted">Your cart is empty.</p>'; return; }
+      box.innerHTML = state.cart.map(it=>`
+        <div class="cart-item">
+          <img src="${it.img}" alt="${it.name}" style="width:64px; height:64px; object-fit:cover; border-radius:10px"/>
+          <div>
+            <div style="font-weight:700">${it.name}</div>
+            <div class="muted">${formatINR(it.price)} • <button data-id="${it.id}" data-action="remove" class="btn" style="padding:4px 8px; font-size:12px">Remove</button></div>
+          </div>
+          <div class="qty">
+            <button data-id="${it.id}" data-action="dec">−</button>
+            <input value="${it.qty}" readonly />
+            <button data-id="${it.id}" data-action="inc">+</button>
+          </div>
+        </div>`).join('');
+      // attach qty handlers
+      $$('#cartItems [data-action]').forEach(b=> b.onclick = ()=>{
+        const id = +b.dataset.id, act = b.dataset.action; const it = state.cart.find(x=>x.id===id);
+        if(!it) return;
+        if(act==='inc') it.qty++;
+        if(act==='dec') it.qty = Math.max(1, it.qty-1);
+        if(act==='remove') state.cart = state.cart.filter(x=>x.id!==id);
+        saveCart(); buildCart(); updateCount();
+      });
+    }
+    function openCart(){ $('#drawer').classList.add('active'); $('#drawer').setAttribute('aria-hidden','false'); }
+    function closeCart(){ $('#drawer').classList.remove('active'); $('#drawer').setAttribute('aria-hidden','true'); }
+    $('#cartBtn').onclick = ()=>{ buildCart(); openCart(); }
+    $('#closeCart').onclick = closeCart; $('#scrim').onclick = closeCart;
+
+    // --- Modal ---
+    function openModal(p){
+      $('#modalTitle').textContent = p.name;
+      $('#modalImg').src = p.img;
+      $('#modalName').textContent = p.name;
+      $('#modalCat').textContent = p.cat;
+      $('#modalDesc').textContent = p.desc;
+      $('#modalPrice').textContent = formatINR(p.price);
+      $('#modalMRP').textContent = formatINR(p.mrp);
+      $('#modal').classList.add('active');
+      $('#modal').setAttribute('aria-hidden','false');
+      $('#modalAdd').onclick = ()=> addToCart(p);
+      $('#modalBuy').onclick = ()=> { addToCart(p); openCart(); };
+    }
+    function closeModal(){ $('#modal').classList.remove('active'); $('#modal').setAttribute('aria-hidden','true'); }
+    $('#closeModal').onclick = closeModal; $('#modal').addEventListener('click', e=>{ if(e.target.id==='modal') closeModal(); })
+
+    // --- About ---
+    $('#aboutBtn').onclick = ()=>{
+      alert('This is a single‑file demo store made with only HTML, CSS and vanilla JS. It includes search, filters, sorting, quick view modal, and a cart drawer with localStorage. Replace product data and images as you like.');
+    }
+
+    // --- Init ---
+    buildFilters(); render(); buildCart();
+    $('#year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
