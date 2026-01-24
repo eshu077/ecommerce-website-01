@@ -1,0 +1,17 @@
+name: Ecommerce Website CI
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run basic check
+        run: echo "Ecommerce website workflow running successfully"
